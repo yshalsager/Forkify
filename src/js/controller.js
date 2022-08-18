@@ -8,15 +8,19 @@ import 'regenerator-runtime/runtime';
 
 ///////////////////////////////////////
 const controlRecipes = async () => {
-  const id = window.location.hash.slice(1);
-  if (!id) return;
-  recipeView.renderSpinner();
+  try {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    recipeView.renderSpinner();
 
-  // 1) Loading recipe
-  await model.loadRecipe(id);
+    // 1) Loading recipe
+    await model.loadRecipe(id);
 
-  // 2) Render recipe
-  recipeView.render(model.state.recipe);
+    // 2) Render recipe
+    recipeView.render(model.state.recipe);
+  } catch (error) {
+    recipeView.renderError();
+  }
 };
 
 const init = function () {
