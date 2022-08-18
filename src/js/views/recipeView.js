@@ -11,6 +11,14 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', this.#generateHTML());
   }
 
+  addHandleRender(handler) {
+    // Handle hash change (recipe click)
+    // Handle page load (recipe click)
+    ['hashchange', 'load'].forEach(event =>
+      window.addEventListener(event, handler)
+    );
+  }
+
   renderSpinner() {
     const html = `
       <div class="spinner">
