@@ -3,7 +3,7 @@ import View from './view';
 class SearchResultsView extends View {
   _parentElement = document.querySelector('.results');
   _errorMessage =
-    'No recipe resutls found for your search query. Please try another one.';
+    'No recipe results found for your search query. Please try another one.';
   _message = '';
 
   _generateHTML() {
@@ -11,9 +11,12 @@ class SearchResultsView extends View {
   }
 
   _generatePreviewHTML(result) {
+    const id = window.location.hash.slice(1);
     return `
       <li class="preview">
-        <a class="preview__link" href="#${result.id}">
+        <a class="preview__link ${
+          result.id === id ? 'preview__link--active' : ''
+        }" href="#${result.id}">
           <figure class="preview__fig">
             <img src="${result.image}" alt="${result.title}" />
           </figure>

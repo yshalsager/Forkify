@@ -10,6 +10,35 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', this._generateHTML());
   }
+
+  update(data) {
+    this._data = data;
+    // const newDOM = new DOMParser().parseFromString(newMarkup, 'text/html'); // create new DOM document from new markup
+    const newDOM = document
+      .createRange()
+      .createContextualFragment(this._generateHTML()); // create new DOM document-fragment from new markup
+    const newElements = Array.from(newDOM.querySelectorAll('*')); // creates an array of all elements in new DOM document
+    const currentElements = Array.from(
+      this._parentElement.querySelectorAll('*')
+    );
+
+    newElements.forEach((newElement, index) => {
+      const currentElement = currentElements[index];
+
+      if (!newElement.isEqualNode(currentElement)) {
+        // if element is a text node, update text
+        if (newElement.firstChild?.nodeValue.trim() !== '') {
+          // currentElement.replaceWith(newElement);
+          currentElement.textContent = newElement.textContent;
+        }
+        // update attributes
+        Array.from(newElement.attributes).forEach(attribute =>
+          currentElement.setAttribute(attribute.name, attribute.value)
+        );
+      }
+    });
+  }
+
   _clear() {
     this._parentElement.innerHTML = '';
   }
